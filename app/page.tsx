@@ -92,7 +92,8 @@ export default function Home() {
   const loadSongIndex = async (indexFile: string) => {
     try {
       setLoading(true)
-      const response = await fetch(`/indexes/${indexFile}`)
+      const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
+      const response = await fetch(`${basePath}/indexes/${indexFile}`)
       const data = await response.json()
       setSongs(data.songs)
     } catch (error) {
