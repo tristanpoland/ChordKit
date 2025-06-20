@@ -1,0 +1,16 @@
+{
+  "name": "A-C",
+  "count": 1,
+  "songs": [
+    {
+      "title": "Blackbird",
+      "artist": "The Beatles",
+      "key": "G Major",
+      "genre": "Rock",
+      "difficulty": "Intermediate",
+      "preview": "\r\n# Blackbird\r\n**Artist:** The Beatles  \r",
+      "path": "rock\\blackbird.md",
+      "slug": "rock-blackbird"
+    }
+  ]
+}

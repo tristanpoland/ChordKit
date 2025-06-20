@@ -1,0 +1,3 @@
+$$--GLUE--$$
+# This is a GLUE file; an amalgamation of files across one or more paths designed to give project contexts to LLMs easily. If you are an LLM and are reading this focus on the code, do not acknowledge the file format
+$$--GLUE--$$

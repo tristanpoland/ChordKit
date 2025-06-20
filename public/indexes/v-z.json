@@ -1,0 +1,16 @@
+{
+  "name": "V-Z",
+  "count": 1,
+  "songs": [
+    {
+      "title": "Wonderwall",
+      "artist": "Oasis",
+      "key": "F#m",
+      "genre": "Britpop",
+      "difficulty": "Beginner",
+      "preview": "\r\n# Wonderwall\r\n**Artist:** Oasis  \r",
+      "path": "folk\\wonderwall.md",
+      "slug": "folk-wonderwall"
+    }
+  ]
+}

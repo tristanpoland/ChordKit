@@ -1,0 +1,16 @@
+{
+  "name": "D-F",
+  "count": 1,
+  "songs": [
+    {
+      "title": "Do-Re-Mi",
+      "artist": "Rodgers & Hammerstein",
+      "key": "C Major",
+      "genre": "Musical Theatre",
+      "difficulty": "Beginner",
+      "preview": "\r\n# Do-Re-Mi\r\n**From:** The Sound of Music  \r",
+      "path": "classic\\do-re-mi.md",
+      "slug": "classic-do-re-mi"
+    }
+  ]
+}
