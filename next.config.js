@@ -5,8 +5,8 @@ const nextConfig = {
   images: {
     unoptimized: true
   },
-  basePath: process.env.NODE_ENV === 'production' ? '/chordkit' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/chordkit/' : '',
+  basePath: process.env.NODE_ENV === 'production' ? '/ChordKit' : '',
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/ChordKit/' : '',
 }
 
 module.exports = nextConfig
