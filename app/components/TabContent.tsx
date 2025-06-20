@@ -216,7 +216,8 @@ function markdownToHtml(markdown: string): string {
   })
 
   // Wrap consecutive list items
-  html = html.replace(/((?:<li[^>]*>.*?<\/li>\s*)+)/gs, '<ul class="my-4 ml-6">$1</ul>')
+  html = html.replace(/((?:<li[^>]*list-decimal.*?<\/li>\s*)+)/gs, '<ol class="my-4 ml-6">$1</ol>')
+  html = html.replace(/((?:<li[^>]*(?!list-decimal).*?<\/li>\s*)+)/gs, '<ul class="my-4 ml-6">$1</ul>')
 
   // Tables
   html = html.replace(/\|(.+)\|\r?\n\|[-\s\|:]+\|\r?\n((?:\|.+\|\r?\n?)*)/g, (match, header, rows) => {
