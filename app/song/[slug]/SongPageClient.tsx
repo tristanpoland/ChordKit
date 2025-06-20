@@ -40,14 +40,15 @@ export default function SongPageClient({ params }: SongPageClientProps) {
       setError('')
       
       // Find the song in all indexes
-      const masterResponse = await fetch('/indexes/master.json')
+      const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
+      const masterResponse = await fetch(`${basePath}/indexes/master.json`)
       const masterIndex = await masterResponse.json()
       
       let foundSong: Song | null = null
       
       // Search through all indexes
       for (const index of masterIndex.indexes) {
-        const indexResponse = await fetch(`/indexes/${index.file}`)
+        const indexResponse = await fetch(`${basePath}/indexes/${index.file}`)
         const indexData = await indexResponse.json()
         
         foundSong = indexData.songs.find((s: Song) => s.slug === params.slug)
@@ -62,7 +63,7 @@ export default function SongPageClient({ params }: SongPageClientProps) {
       setSong(foundSong)
       
       // Load the actual song content
-      const songResponse = await fetch(`/songs/${foundSong.path}`)
+      const songResponse = await fetch(`${basePath}/songs/${foundSong.path}`)
       if (!songResponse.ok) {
         setError('Failed to load song content')
         return
