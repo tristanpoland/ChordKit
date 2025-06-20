@@ -186,7 +186,7 @@ function createSVGFromChordData(chordName: string, position: any): string {
   const startX = 22
   const startY = 40
 
-  let svg = `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+  let svg = `<svg width="100%" height="100%" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
     <defs>
       <linearGradient id="bg-${chordName}" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" style="stop-color:#1f2937;stop-opacity:1" />
@@ -250,7 +250,7 @@ function createFallbackChordDiagram(chordName: string): string {
   const width = 120
   const height = 160
 
-  return `<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+  return `<svg width="100%" height="100%" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
     <defs>
       <linearGradient id="fallback-bg" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" style="stop-color:#374151;stop-opacity:1" />
@@ -290,66 +290,77 @@ export default function RightSidebar({ content, className = '' }: RightSidebarPr
   }, [markdownContent])
 
   return (
-    <div className={`w-full lg:w-80 xl:w-96 bg-gradient-to-b from-gray-900/95 to-gray-800/95 backdrop-blur-xl flex-shrink-0 ${className}`}>
-      {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-purple-500/5 pointer-events-none"></div>
+    <div className={`w-full lg:w-80 xl:w-96 bg-black/80 backdrop-blur-xl flex-shrink-0 relative ${className}`}>
+      {/* Enhanced gradient overlay to match main theme */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-purple-500/5 pointer-events-none"></div>
       
       {/* Single scroll container for entire sidebar */}
       <div className="h-full overflow-y-auto overflow-x-hidden relative">
         <div className="min-h-full flex flex-col">
           
-          {/* Metadata Section */}
+          {/* Enhanced Metadata Section */}
           {Object.keys(metadata).length > 0 && (
-            <div className="flex-shrink-0 p-6 border-b border-gray-700/50">
-              <div className="space-y-4">
+            <div className="flex-shrink-0 p-6 border-b border-gray-800/50 relative">
+              <div className="space-y-5">
                 {metadata.title && (
                   <div className="hidden lg:block">
-                    <h1 className="text-xl xl:text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent mb-1 leading-tight">
+                    <h1 className="text-xl xl:text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2 leading-tight">
                       {metadata.title}
                     </h1>
                   </div>
                 )}
                 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {metadata.artist && (
                     <div className="group">
-                      <span className="text-gray-400 text-sm font-medium block mb-1">Artist</span>
-                      <div className="text-white font-semibold bg-gray-800/30 rounded-lg px-3 py-2 border border-gray-700/50 group-hover:border-gray-600/50 transition-colors duration-200">
-                        {metadata.artist}
+                      <span className="text-gray-400 text-sm font-semibold block mb-2">Artist</span>
+                      <div className="relative">
+                        <div className="text-white font-bold bg-gray-800/50 backdrop-blur-sm rounded-xl px-4 py-3 border border-gray-700/50 group-hover:border-blue-500/50 transition-all duration-300 shadow-lg">
+                          {metadata.artist}
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                       </div>
                     </div>
                   )}
                   
                   {metadata.album && (
                     <div className="group">
-                      <span className="text-gray-400 text-sm font-medium block mb-1">Album</span>
-                      <div className="text-white font-semibold bg-gray-800/30 rounded-lg px-3 py-2 border border-gray-700/50 group-hover:border-gray-600/50 transition-colors duration-200">
-                        {metadata.album}
+                      <span className="text-gray-400 text-sm font-semibold block mb-2">Album</span>
+                      <div className="relative">
+                        <div className="text-white font-bold bg-gray-800/50 backdrop-blur-sm rounded-xl px-4 py-3 border border-gray-700/50 group-hover:border-purple-500/50 transition-all duration-300 shadow-lg">
+                          {metadata.album}
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-blue-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                       </div>
                     </div>
                   )}
                   
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-4">
                     {metadata.key && (
                       <div className="group">
-                        <span className="text-gray-400 text-sm font-medium block mb-1">Key</span>
-                        <div className="text-center py-2 bg-gradient-to-br from-blue-600/20 to-blue-800/20 border border-blue-600/30 rounded-lg">
-                          <span className="text-blue-300 font-bold text-lg">{metadata.key}</span>
+                        <span className="text-gray-400 text-sm font-semibold block mb-2">Key</span>
+                        <div className="relative">
+                          <div className="text-center py-3 bg-gradient-to-br from-blue-600/20 to-blue-800/30 border border-blue-500/50 rounded-xl backdrop-blur-sm shadow-lg group-hover:shadow-blue-500/25 transition-all duration-300">
+                            <span className="text-blue-300 font-bold text-lg">{metadata.key}</span>
+                          </div>
+                          <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-blue-600/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                         </div>
                       </div>
                     )}
                     
                     {metadata.difficulty && (
                       <div className="group">
-                        <span className="text-gray-400 text-sm font-medium block mb-1">Difficulty</span>
-                        <div className={`text-center py-2 rounded-lg border font-semibold text-sm ${
-                          metadata.difficulty === 'Beginner' 
-                            ? 'bg-gradient-to-br from-green-600/20 to-green-800/20 border-green-600/30 text-green-300' :
-                          metadata.difficulty === 'Intermediate' 
-                            ? 'bg-gradient-to-br from-yellow-600/20 to-yellow-800/20 border-yellow-600/30 text-yellow-300' :
-                            'bg-gradient-to-br from-red-600/20 to-red-800/20 border-red-600/30 text-red-300'
-                        }`}>
-                          {metadata.difficulty}
+                        <span className="text-gray-400 text-sm font-semibold block mb-2">Difficulty</span>
+                        <div className="relative">
+                          <div className={`text-center py-3 rounded-xl border font-bold text-sm backdrop-blur-sm shadow-lg transition-all duration-300 ${
+                            metadata.difficulty === 'Beginner' 
+                              ? 'bg-gradient-to-br from-green-600/20 to-green-800/30 border-green-500/50 text-green-300 group-hover:shadow-green-500/25' :
+                            metadata.difficulty === 'Intermediate' 
+                              ? 'bg-gradient-to-br from-yellow-600/20 to-yellow-800/30 border-yellow-500/50 text-yellow-300 group-hover:shadow-yellow-500/25' :
+                              'bg-gradient-to-br from-red-600/20 to-red-800/30 border-red-500/50 text-red-300 group-hover:shadow-red-500/25'
+                          }`}>
+                            {metadata.difficulty}
+                          </div>
                         </div>
                       </div>
                     )}
@@ -357,9 +368,12 @@ export default function RightSidebar({ content, className = '' }: RightSidebarPr
                   
                   {metadata.genre && (
                     <div className="group">
-                      <span className="text-gray-400 text-sm font-medium block mb-1">Genre</span>
-                      <div className="text-white font-semibold bg-gray-800/30 rounded-lg px-3 py-2 border border-gray-700/50 group-hover:border-gray-600/50 transition-colors duration-200">
-                        {metadata.genre}
+                      <span className="text-gray-400 text-sm font-semibold block mb-2">Genre</span>
+                      <div className="relative">
+                        <div className="text-white font-bold bg-gray-800/50 backdrop-blur-sm rounded-xl px-4 py-3 border border-gray-700/50 group-hover:border-purple-500/50 transition-all duration-300 shadow-lg">
+                          {metadata.genre}
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-pink-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                       </div>
                     </div>
                   )}
@@ -370,11 +384,14 @@ export default function RightSidebar({ content, className = '' }: RightSidebarPr
                   .filter(([key]) => !['title', 'artist', 'album', 'key', 'genre', 'difficulty'].includes(key))
                   .map(([key, value]) => (
                     <div key={key} className="group">
-                      <span className="text-gray-400 text-sm font-medium block mb-1 capitalize">
+                      <span className="text-gray-400 text-sm font-semibold block mb-2 capitalize">
                         {key.replace(/[_-]/g, ' ')}
                       </span>
-                      <div className="text-white font-semibold bg-gray-800/30 rounded-lg px-3 py-2 border border-gray-700/50 group-hover:border-gray-600/50 transition-colors duration-200">
-                        {value}
+                      <div className="relative">
+                        <div className="text-white font-bold bg-gray-800/50 backdrop-blur-sm rounded-xl px-4 py-3 border border-gray-700/50 group-hover:border-blue-500/50 transition-all duration-300 shadow-lg">
+                          {value}
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                       </div>
                     </div>
                   ))}
@@ -382,49 +399,60 @@ export default function RightSidebar({ content, className = '' }: RightSidebarPr
             </div>
           )}
 
-          {/* Chords Section */}
+          {/* Enhanced Chords Section */}
           <div className="flex-1 p-6">
-            {/* Section Header */}
+            {/* Enhanced Section Header */}
             <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-lg">
+              <div className="flex items-center space-x-4">
+                <div className="p-3 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-xl backdrop-blur-sm border border-blue-500/30 shadow-lg">
                   <Music2 className="w-5 h-5 text-blue-400" />
                 </div>
-                <h3 className="text-lg font-bold text-white">
-                  Chords Used
-                </h3>
-                {chords.length > 0 && (
-                  <span className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 text-blue-300 text-sm px-3 py-1 rounded-full font-semibold">
-                    {chords.length}
-                  </span>
-                )}
+                <div>
+                  <h3 className="text-lg font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                    Chords Used
+                  </h3>
+                  {chords.length > 0 && (
+                    <span className="inline-block mt-1 bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 text-blue-300 text-sm px-3 py-1 rounded-full font-semibold backdrop-blur-sm">
+                      {chords.length} chord{chords.length !== 1 ? 's' : ''}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
             
-            {/* Chords Content */}
+            {/* Enhanced Chords Content */}
             {loading ? (
-              <div className="flex items-center justify-center py-12">
-                <div className="text-center space-y-4">
+              <div className="flex items-center justify-center py-16">
+                <div className="text-center space-y-6">
                   <div className="relative">
-                    <Loader2 className="w-8 h-8 text-blue-400 animate-spin mx-auto" />
-                    <div className="absolute inset-0 w-8 h-8 mx-auto">
-                      <Music2 className="w-8 h-8 text-blue-500/20" />
+                    <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-blue-500/30">
+                      <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
+                    </div>
+                    <div className="absolute inset-0 w-16 h-16 mx-auto">
+                      <div className="w-full h-full bg-blue-500/10 rounded-full animate-ping"></div>
                     </div>
                   </div>
-                  <p className="text-gray-400 text-sm font-medium">Loading chord diagrams...</p>
+                  <div className="space-y-2">
+                    <h4 className="text-lg font-semibold text-white">Loading Chords</h4>
+                    <p className="text-gray-400 text-sm font-medium">Generating chord diagrams...</p>
+                  </div>
                 </div>
               </div>
             ) : chords.length > 0 ? (
               <div className="space-y-4">
-                <div className="grid grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-3">
                   {chords.map((chord, index) => (
                     <div
                       key={chord.name}
-                      className="group hover:scale-105 transition-all duration-300 hover:z-10 relative"
-                      style={{ animationDelay: `${index * 50}ms` }}
+                      className="group relative transform hover:scale-105 transition-all duration-300 hover:z-10"
+                      style={{ 
+                        animationDelay: `${index * 50}ms`,
+                        animation: 'fadeInUp 0.6s ease-out forwards',
+                        aspectRatio: '3/4'
+                      }}
                     >
                       <div 
-                        className="rounded-xl overflow-hidden shadow-lg hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300"
+                        className="w-full h-full rounded-lg overflow-hidden shadow-lg hover:shadow-xl hover:shadow-blue-500/25 transition-all duration-300 border border-gray-700/50 group-hover:border-blue-500/50 flex items-center justify-center chord-container"
                         dangerouslySetInnerHTML={{ __html: chord.svg }}
                       />
                     </div>
@@ -432,32 +460,54 @@ export default function RightSidebar({ content, className = '' }: RightSidebarPr
                 </div>
               </div>
             ) : (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 mx-auto bg-gray-800/50 rounded-full flex items-center justify-center mb-4">
-                  <Music2 className="w-8 h-8 text-gray-500" />
+              <div className="text-center py-16">
+                <div className="w-20 h-20 mx-auto bg-gray-800/50 rounded-full flex items-center justify-center mb-6 backdrop-blur-sm border border-gray-700/50">
+                  <Music2 className="w-10 h-10 text-gray-500" />
                 </div>
-                <p className="text-gray-500 text-sm font-medium">No chords detected in this song</p>
-                <p className="text-gray-600 text-xs mt-1">Chords should be marked with [ChordName] brackets</p>
+                <div className="space-y-2">
+                  <h4 className="text-lg font-semibold text-white">No Chords Detected</h4>
+                  <p className="text-gray-400 text-sm">Chords should be marked with [ChordName] brackets</p>
+                </div>
               </div>
             )}
           </div>
 
-          {/* Footer */}
-          <div className="flex-shrink-0 p-6 border-t border-gray-700/50 mt-auto">
+          {/* Enhanced Footer */}
+          <div className="flex-shrink-0 p-6 border-t border-gray-800/50 mt-auto relative">
             <div className="text-center space-y-2">
               <p className="text-gray-500 text-xs">
                 {chords.length > 0 && !loading && (
                   <>
-                    <span className="text-blue-400 font-semibold">{chords.length}</span> chord{chords.length !== 1 ? 's' : ''} detected
-                    <span className="mx-2">•</span>
+                    <span className="text-blue-400 font-bold">{chords.length}</span> chord{chords.length !== 1 ? 's' : ''} detected
+                    <span className="mx-2 text-gray-600">•</span>
                   </>
                 )}
-                Powered by <code className="bg-gray-800/50 text-blue-400 px-2 py-1 rounded text-xs font-mono">@tombatossals/chords-db</code>
+                Powered by{' '}
+                <code className="bg-gray-800/50 text-blue-400 px-2 py-1 rounded-lg text-xs font-mono border border-gray-700/50 backdrop-blur-sm">
+                  @tombatossals/chords-db
+                </code>
               </p>
             </div>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .chord-container svg {
+          width: 100%;
+          height: 100%;
+        }
+      `}</style>
     </div>
   )
 }

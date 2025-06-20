@@ -22,19 +22,19 @@ interface TabMetadata {
 // Parse frontmatter from markdown
 function parseFrontmatter(content: string): { metadata: TabMetadata; content: string } {
   // More robust regex to handle various line endings and spacing
-  const frontmatterRegex = /^---\s*[\r\n]+([\s\S]*?)[\r\n]+---\s*[\r\n]+([\s\S]*)$/
-  const match = content.match(frontmatterRegex)
+  const frontmatterRegex = /^---\s*\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n|$)([\s\S]*)$/
+  const match = content.trim().match(frontmatterRegex)
   
   if (!match) {
     // If no frontmatter found, return original content
-    return { metadata: {}, content }
+    return { metadata: {}, content: content.trim() }
   }
   
   const [, frontmatter, markdownContent] = match
   const metadata: TabMetadata = {}
   
   // Simple YAML parser for basic key-value pairs
-  frontmatter.split(/[\r\n]+/).forEach(line => {
+  frontmatter.split(/\r?\n/).forEach(line => {
     const colonIndex = line.indexOf(':')
     if (colonIndex > 0) {
       const key = line.slice(0, colonIndex).trim()
@@ -141,20 +141,117 @@ function isValidChord(chordName: string): boolean {
   }
 }
 
-// Convert markdown to HTML with chord detection
+// Escape HTML characters
+function escapeHtml(text: string): string {
+  const escapeMap: { [key: string]: string } = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#x27;',
+    '/': '&#x2F;'
+  }
+  return text.replace(/[&<>"'/]/g, (char) => escapeMap[char])
+}
+
+// Convert markdown to HTML with comprehensive markdown support
 function markdownToHtml(markdown: string): string {
   let html = markdown
+
+  // Store code blocks and inline code temporarily to avoid processing markdown inside them
+  const codeBlocks: string[] = []
+  const inlineCodes: string[] = []
   
-  // Headers
+  // Use more unique placeholders to avoid conflicts
+  const codeBlockPlaceholder = 'ĦĦĦCODEBLOCKĦĦĦ'
+  const inlineCodePlaceholder = 'ĦĦĦINLINECODEĦĦĦ'
+  
+  // Extract and store fenced code blocks (``` or ```)
+  html = html.replace(/```(\w*)\r?\n([\s\S]*?)```/g, (match, lang, code) => {
+    const index = codeBlocks.length
+    codeBlocks.push(`<pre class="bg-gray-900 border border-gray-700 rounded-lg p-4 overflow-x-auto my-4"><code class="text-gray-100 text-sm font-mono whitespace-pre">${escapeHtml(code.trim())}</code></pre>`)
+    return `${codeBlockPlaceholder}${index}${codeBlockPlaceholder}`
+  })
+  
+  // Extract and store inline code (single backticks)
+  html = html.replace(/`([^`\r\n]+)`/g, (match, code) => {
+    const index = inlineCodes.length
+    inlineCodes.push(`<code class="bg-gray-800 text-gray-100 px-2 py-1 rounded text-sm font-mono">${escapeHtml(code)}</code>`)
+    return `${inlineCodePlaceholder}${index}${inlineCodePlaceholder}`
+  })
+
+  // Headers (process before other formatting)
+  html = html.replace(/^##### (.*$)/gm, '<h5 class="text-base font-semibold text-white mt-4 mb-2">$1</h5>')
+  html = html.replace(/^#### (.*$)/gm, '<h4 class="text-lg font-semibold text-white mt-5 mb-3">$1</h4>')
   html = html.replace(/^### (.*$)/gm, '<h3 class="text-lg font-semibold text-white mt-6 mb-3">$1</h3>')
   html = html.replace(/^## (.*$)/gm, '<h2 class="text-xl font-bold text-white mt-8 mb-4">$1</h2>')
   html = html.replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold text-white mt-8 mb-6">$1</h1>')
+
+  // Horizontal rules
+  html = html.replace(/^---$/gm, '<hr class="border-gray-700 my-8">')
+  html = html.replace(/^\*\*\*$/gm, '<hr class="border-gray-700 my-8">')
+  html = html.replace(/^___$/gm, '<hr class="border-gray-700 my-8">')
+
+  // Blockquotes
+  html = html.replace(/^> (.+)$/gm, '<blockquote class="border-l-4 border-gray-600 pl-4 italic text-gray-300 my-4">$1</blockquote>')
   
-  // Bold text
+  // Multi-line blockquotes
+  html = html.replace(/^> ([\s\S]*?)(?=\n(?!>)|\n$)/gm, (match, content) => {
+    const lines = content.split('\n').map((line: string) => line.replace(/^> ?/, '')).join('<br>')
+    return `<blockquote class="border-l-4 border-gray-600 pl-4 italic text-gray-300 my-4">${lines}</blockquote>`
+  })
+
+  // Unordered lists
+  html = html.replace(/^(\s*)[\*\-\+] (.+)$/gm, (match, indent, content) => {
+    const level = Math.floor(indent.length / 2)
+    const marginClass = level > 0 ? `ml-${level * 4}` : ''
+    return `<li class="text-gray-100 mb-1 ${marginClass}">• ${content}</li>`
+  })
+
+  // Ordered lists
+  html = html.replace(/^(\s*)\d+\. (.+)$/gm, (match, indent, content) => {
+    const level = Math.floor(indent.length / 2)
+    const marginClass = level > 0 ? `ml-${level * 4}` : ''
+    return `<li class="text-gray-100 mb-1 list-decimal ${marginClass}">${content}</li>`
+  })
+
+  // Wrap consecutive list items
+  html = html.replace(/((?:<li[^>]*>.*?<\/li>\s*)+)/gs, '<ul class="my-4 ml-6">$1</ul>')
+
+  // Tables
+  html = html.replace(/\|(.+)\|\r?\n\|[-\s\|:]+\|\r?\n((?:\|.+\|\r?\n?)*)/g, (match, header, rows) => {
+    const headerCells = header.split('|').map((cell: string) => 
+      `<th class="border border-gray-600 px-4 py-2 bg-gray-800 text-white font-semibold">${cell.trim()}</th>`
+    ).join('')
+    
+    const rowsHtml = rows.trim().split(/\r?\n/).map((row: string) => {
+      const cells = row.split('|').map((cell: string) => 
+        `<td class="border border-gray-600 px-4 py-2 text-gray-100">${cell.trim()}</td>`
+      ).join('')
+      return `<tr>${cells}</tr>`
+    }).join('')
+    
+    return `<table class="border-collapse border border-gray-600 my-4 w-full"><thead><tr>${headerCells}</tr></thead><tbody>${rowsHtml}</tbody></table>`
+  })
+
+  // Links
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-400 hover:text-blue-300 underline transition-colors">$1</a>')
+  
+  // Images
+  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg my-4">')
+
+  // Strikethrough
+  html = html.replace(/~~(.*?)~~/g, '<del class="text-gray-500">$1</del>')
+
+  // Bold text (handle both ** and __)
   html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-white">$1</strong>')
-  
-  // Italic text
+  html = html.replace(/__(.*?)__/g, '<strong class="font-semibold text-white">$1</strong>')
+
+  // Italic text (handle both * and _)
   html = html.replace(/\*(.*?)\*/g, '<em class="italic text-gray-200">$1</em>')
+  html = html.replace(/_(.*?)_/g, '<em class="italic text-gray-200">$1</em>')
+
+  // GUITAR TAB SPECIFIC FEATURES
   
   // Chord notation - enhanced styling with hover effects, using DATABASE LOOKUP
   html = html.replace(/\[([^\]]+)\]/g, (match, chordName) => {
@@ -180,10 +277,20 @@ function markdownToHtml(markdown: string): string {
   
   // Verse/Chorus/Bridge labels
   html = html.replace(/^\[([^\]]+)\]/gm, '<div class="section-label text-yellow-400 font-semibold text-sm uppercase tracking-wide mt-6 mb-2 border-l-4 border-yellow-400 pl-3">$1</div>')
-  
-  // Line breaks - preserve formatting for song structure
-  html = html.replace(/\n\n/g, '</p><p class="mb-4 text-gray-100 leading-relaxed">')
-  html = html.replace(/\n/g, '<br>')
+
+  // Restore inline code FIRST (before code blocks to avoid conflicts)
+  inlineCodes.forEach((codeHtml, index) => {
+    html = html.replace(`${inlineCodePlaceholder}${index}${inlineCodePlaceholder}`, codeHtml)
+  })
+
+  // Restore code blocks
+  codeBlocks.forEach((codeHtml, index) => {
+    html = html.replace(`${codeBlockPlaceholder}${index}${codeBlockPlaceholder}`, codeHtml)
+  })
+
+  // Line breaks and paragraphs
+  html = html.replace(/\r?\n\r?\n/g, '</p><p class="mb-4 text-gray-100 leading-relaxed">')
+  html = html.replace(/\r?\n/g, '<br>')
   
   // Wrap in paragraphs
   html = '<p class="mb-4 text-gray-100 leading-relaxed">' + html + '</p>'
