@@ -118,8 +118,8 @@ export default function Home() {
     return matchesSearch && matchesGenre && matchesDifficulty
   })
 
-  const uniqueGenres = [...new Set(songs.map(song => song.genre).filter(Boolean))]
-  const uniqueDifficulties = [...new Set(songs.map(song => song.difficulty).filter(Boolean))]
+  const uniqueGenres = Array.from(new Set(songs.map(song => song.genre).filter(Boolean)))
+  const uniqueDifficulties = Array.from(new Set(songs.map(song => song.difficulty).filter(Boolean)))
 
   if (loading && !masterIndex) {
     return (
