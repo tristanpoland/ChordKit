@@ -1,6 +1,4 @@
 import SongPageClient from './SongPageClient'
-import fs from 'fs'
-import path from 'path'
 
 interface SongPageProps {
   params: {
@@ -11,6 +9,9 @@ interface SongPageProps {
 export async function generateStaticParams() {
   try {
     // Read the master index to get all available indexes
+    const fs = require('fs')
+    const path = require('path')
+    
     const masterIndexPath = path.join(process.cwd(), 'public', 'indexes', 'master.json')
     
     // Check if master index exists
@@ -21,7 +22,7 @@ export async function generateStaticParams() {
     
     const masterIndex = JSON.parse(fs.readFileSync(masterIndexPath, 'utf8'))
     
-    const allSlugs: { slug: string }[] = []
+    const allSlugs = []
     
     // Read all index files and collect slugs
     for (const index of masterIndex.indexes) {
