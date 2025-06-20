@@ -12,7 +12,8 @@ export async function generateStaticParams() {
     const fs = require('fs')
     const path = require('path')
     
-    const masterIndexPath = path.join(process.cwd(), 'public', 'indexes', 'master.json')
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
+    const masterIndexPath = path.join(process.cwd(), basePath, 'public', 'indexes', 'master.json')
     
     // Check if master index exists
     if (!fs.existsSync(masterIndexPath)) {
@@ -26,7 +27,7 @@ export async function generateStaticParams() {
     
     // Read all index files and collect slugs
     for (const index of masterIndex.indexes) {
-      const indexPath = path.join(process.cwd(), 'public', 'indexes', index.file)
+      const indexPath = path.join(process.cwd(), basePath, 'public', 'indexes', index.file)
       
       if (fs.existsSync(indexPath)) {
         const indexData = JSON.parse(fs.readFileSync(indexPath, 'utf8'))

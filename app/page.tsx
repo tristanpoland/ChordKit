@@ -62,7 +62,9 @@ export default function Home() {
 
   const loadMasterIndex = async () => {
     try {
-      const response = await fetch('/indexes/master.json')
+      const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ''
+      const response = await fetch(`${basePath}/indexes/master.json`)
+
       
       if (!response.ok) {
         setIndexesExist(false)
