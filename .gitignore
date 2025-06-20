@@ -136,3 +136,4 @@ dist
 .pnp.*
 /public/songs/folk
 /public/songs/rock
+/public/indexes
