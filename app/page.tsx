@@ -200,7 +200,7 @@ export default function Home() {
             
             <div className="flex items-center space-x-4">
               <a 
-                href="https://github.com/yourusername/chordkit" 
+                href="https://github.com/tristanpoland/chordkit" 
                 className="group flex items-center space-x-2 bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 text-gray-300 hover:text-white hover:border-gray-600/50 transition-all duration-300 rounded-lg px-4 py-2"
               >
                 <GitFork className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
