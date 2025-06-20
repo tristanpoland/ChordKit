@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Music, Download, ZoomIn, ZoomOut, RotateCcw, Loader2, AlertCircle } from 'lucide-react'
+import { ArrowLeft, Music, Download, ZoomIn, ZoomOut, RotateCcw, Loader2, AlertCircle, Menu, X } from 'lucide-react'
 import TabContent from '../../components/TabContent'
 import RightSidebar from '../../components/RightSidebar'
 
@@ -29,6 +29,7 @@ export default function SongPageClient({ params }: SongPageClientProps) {
   const [fontSize, setFontSize] = useState(16)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -193,8 +194,17 @@ ${content}` : content
               {/* Right Section - Controls */}
               <div className="flex items-center space-x-4">
                 
+                {/* Mobile Menu Toggle */}
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="lg:hidden p-2.5 text-gray-400 hover:text-white hover:bg-gray-700/50 rounded-lg transition-all duration-200"
+                  title="Toggle menu"
+                >
+                  {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                </button>
+                
                 {/* Font Size Controls */}
-                <div className="flex items-center bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-1">
+                <div className="hidden sm:flex items-center bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-1">
                   <button
                     onClick={decreaseFontSize}
                     className="p-2.5 text-gray-400 hover:text-white hover:bg-gray-700/50 rounded-lg transition-all duration-200"
@@ -240,6 +250,47 @@ ${content}` : content
           </div>
         </header>
 
+        {/* Mobile Controls Panel - Only visible when menu is open */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden relative z-10 bg-black/95 backdrop-blur-xl border-b border-gray-800/50 p-4">
+            <div className="space-y-4">
+              {/* Font Size Controls for Mobile */}
+              <div>
+                <h3 className="text-sm font-semibold text-gray-300 mb-2">Font Size</h3>
+                <div className="flex items-center bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-1">
+                  <button
+                    onClick={decreaseFontSize}
+                    className="flex-1 p-2.5 text-gray-400 hover:text-white hover:bg-gray-700/50 rounded-lg transition-all duration-200"
+                    title="Decrease font size"
+                  >
+                    <ZoomOut className="w-4 h-4 mx-auto" />
+                  </button>
+                  
+                  <div className="px-4 py-1">
+                    <span className="text-sm text-gray-400 font-medium">{fontSize}px</span>
+                  </div>
+                  
+                  <button
+                    onClick={resetFontSize}
+                    className="flex-1 p-2.5 text-gray-400 hover:text-white hover:bg-gray-700/50 rounded-lg transition-all duration-200"
+                    title="Reset font size"
+                  >
+                    <RotateCcw className="w-4 h-4 mx-auto" />
+                  </button>
+                  
+                  <button
+                    onClick={increaseFontSize}
+                    className="flex-1 p-2.5 text-gray-400 hover:text-white hover:bg-gray-700/50 rounded-lg transition-all duration-200"
+                    title="Increase font size"
+                  >
+                    <ZoomIn className="w-4 h-4 mx-auto" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Tab Content Area */}
         <div className="flex-1 min-h-0 relative">
           {/* Subtle gradient overlay */}
@@ -253,8 +304,8 @@ ${content}` : content
         </div>
       </div>
 
-      {/* Right Sidebar */}
-      <div className="lg:w-80 xl:w-96 order-first lg:order-last">
+      {/* Right Sidebar - Hidden by default on mobile */}
+      <div className={`lg:w-80 xl:w-96 ${mobileMenuOpen ? 'block' : 'hidden lg:block'} order-first lg:order-last`}>
         <RightSidebar 
           content={enhancedContent}
           className="h-full border-r lg:border-r-0 lg:border-l border-gray-800/50 bg-gray-900/95 backdrop-blur-xl"
