@@ -7,22 +7,58 @@ difficulty: "Beginner"
 ---
 
 # Do-Re-Mi
-**From:** The Sound of Music  
+**Artist:** Rodgers & Hammerstein  
+**Musical:** The Sound of Music  
 **Key:** C Major
 
+## Intro
+[C] [F] [G] [C]
+
 ## Verse 1
-[C]Do, a deer, a female deer\
-[Dm]Ray, a drop of golden sun\
-[Eb]May, a possi[D#]bility\
-[D/F#]Fee, the price you pay to run
+[C]Doe, a deer, a female [G]deer  
+[G]Ray, a drop of golden [C]sun  
+[C]Me, a name I call my[F]self  
+[F]Far, a long, long way to [C]run  
 
-*(half-time, bossanova guitar)*\
-[CΔ913]So, — I'd [C6]like to see Bra[Fmaj9]zil . . . . .[F6(9)]\
-[E-7b13]La, — I'd [CM7sus2]really like to [E9]go . . .[E7b9]\
-[AmΔ7/9]Tea, — I [A-7]sit and sip so [D#ø7]slow . . .[D#o7]\
-That will [Dm7|x57565]bring — [F6(9)|x87788]us —— [Em7|x79787]back — [G13|x,10,x,12,12,12]to —— [8xx987]Do . . . .[8,(10),10,9,10,x]
+## Verse 2
+[C]Sew, a needle pulling [G]thread  
+[G]La, a note to follow [Am]sew  
+[F]Tea, a drink with jam and [G]bread  
+That will bring us back to [C]do-oh-oh-oh [F] [C]
 
-## Chord Reference
-- C Major: [C|(3)32010]
-- D minor: [Dm|xx0231]
-- E♭ Major: [Eb|x68886]
+## Chorus
+[C]Do-re-mi-fa-[F]sol-la-ti-[G]do!  
+[C]Do-re-mi-fa-[F]sol-la-ti-[G]do!  
+[C]Do! [F]Do!
+
+## Bridge
+When you [C]know the notes to [F]sing  
+You can [G]sing most any[C]thing  
+When you [C]know the notes to [F]sing  
+You can [G]sing most any[C]thing!
+
+## Verse 3 (Teaching Section)
+[C]Do! (A deer, a female deer)  
+[D]Re! (A drop of golden sun)  
+[Em]Mi! (A name I call myself)  
+[F]Fa! (A long, long way to run)  
+
+[G]Sol! (A needle pulling thread)  
+[Am]La! (A note to follow sol)  
+[Bb]Ti! (A drink with jam and bread)  
+That will [G]bring us back to [C]do!
+
+## Final Chorus
+[C]Do-re-mi-fa-[F]sol-la-ti-[G]do!  
+[C]Do-re-mi-fa-[F]sol-la-ti-[G]do!  
+[C]Do-ti-la-sol-[F]fa-mi-re-[G]do!  
+[C]Do! [F] [C]
+
+## Chords Used
+- C: [C|x32010]
+- F: [F|133211]
+- G: [G|320003]
+- Am: [Am|x02210]
+- D: [D|xx0232]
+- Em: [Em|022000]
+- Bb: [Bb|x13331]
