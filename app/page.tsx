@@ -278,39 +278,39 @@ export default function Home() {
                 ) : (
                   <div className="space-y-4">
                     {filteredSongs.map((song) => (
-                      <a
+                        <a
                         key={song.slug}
-                        href={`/song/${song.slug}`}
+                        href={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/song/${song.slug}`}
                         className="block p-4 bg-gray-800 border border-gray-700 rounded-lg hover:border-blue-500 hover:bg-gray-750 transition-all"
-                      >
+                        >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <h3 className="font-semibold text-white text-lg">
-                              {song.title}
-                            </h3>
-                            <p className="text-gray-300 mb-2">{song.artist}</p>
-                            <div className="flex items-center space-x-4 text-sm text-gray-400">
-                              {song.key && <span>Key: {song.key}</span>}
-                              {song.genre && <span>Genre: {song.genre}</span>}
-                              {song.difficulty && (
-                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                  song.difficulty === 'Beginner' ? 'bg-green-900 text-green-300 border border-green-700' :
-                                  song.difficulty === 'Intermediate' ? 'bg-yellow-900 text-yellow-300 border border-yellow-700' :
-                                  'bg-red-900 text-red-300 border border-red-700'
-                                }`}>
-                                  {song.difficulty}
-                                </span>
-                              )}
-                            </div>
-                            {song.preview && (
-                              <p className="text-gray-400 text-sm mt-2 line-clamp-2">
-                                {song.preview}
-                              </p>
+                          <h3 className="font-semibold text-white text-lg">
+                            {song.title}
+                          </h3>
+                          <p className="text-gray-300 mb-2">{song.artist}</p>
+                          <div className="flex items-center space-x-4 text-sm text-gray-400">
+                            {song.key && <span>Key: {song.key}</span>}
+                            {song.genre && <span>Genre: {song.genre}</span>}
+                            {song.difficulty && (
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              song.difficulty === 'Beginner' ? 'bg-green-900 text-green-300 border border-green-700' :
+                              song.difficulty === 'Intermediate' ? 'bg-yellow-900 text-yellow-300 border border-yellow-700' :
+                              'bg-red-900 text-red-300 border border-red-700'
+                            }`}>
+                              {song.difficulty}
+                            </span>
                             )}
+                          </div>
+                          {song.preview && (
+                            <p className="text-gray-400 text-sm mt-2 line-clamp-2">
+                            {song.preview}
+                            </p>
+                          )}
                           </div>
                           <Music className="w-5 h-5 text-gray-500 ml-4 flex-shrink-0" />
                         </div>
-                      </a>
+                        </a>
                     ))}
                   </div>
                 )}
